@@ -1,7 +1,7 @@
 FROM ubuntu
 MAINTAINER VCA Technology <developers@vcatechnology.com>
 
-#update all packages
+# Update all packages
 RUN apt-get update && \
   apt-get -y dist-upgrade && \
   apt-get -y autoremove && \
