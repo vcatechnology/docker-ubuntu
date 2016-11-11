@@ -1,4 +1,4 @@
-FROM ubuntu:16.10
+FROM ubuntu
 MAINTAINER VCA Technology <developers@vcatechnology.com>
 
 #update all packages
