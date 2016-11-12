@@ -9,7 +9,7 @@ ARG VERSION
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="$PROJECT_NAME" \
       org.label-schema.description="A Ubuntu image that is updated daily to provide the latest packages" \
-      org.label-schema.url="https://www.debian.org/" \
+      org.label-schema.url="https://www.ubuntu.com/" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url="https://github.com/vcatechnology/docker-ubuntu" \
       org.label-schema.vendor="VCA Technology" \
