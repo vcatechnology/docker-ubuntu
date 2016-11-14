@@ -18,10 +18,10 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0"
 
 # Update all packages
-RUN apt-get update && \
-  apt-get -y dist-upgrade && \
-  apt-get -y autoremove && \
-  apt-get clean
+RUN apt-get -q update \
+ && apt-get -qy dist-upgrade \
+ && apt-get -qy autoremove \
+ && apt-get -q clean
 
 # Generate locales
 RUN cat /etc/locale.gen | expand | sed 's/^# .*$//g' | sed 's/^#$//g' | egrep -v '^$' | sed 's/^#//g' > /tmp/locale.gen \
@@ -34,15 +34,15 @@ RUN touch                         /usr/local/bin/vca-install-package && \
   chmod +x                        /usr/local/bin/vca-install-package && \
   echo '#! /bin/sh'            >> /usr/local/bin/vca-install-package && \
   echo 'set -e'                >> /usr/local/bin/vca-install-package && \
-  echo 'apt-get update'        >> /usr/local/bin/vca-install-package && \
-  echo 'apt-get -y install $@' >> /usr/local/bin/vca-install-package && \
-  echo 'apt-get -y clean'      >> /usr/local/bin/vca-install-package
+  echo 'apt-get -q update'        >> /usr/local/bin/vca-install-package && \
+  echo 'apt-get -qy install $@' >> /usr/local/bin/vca-install-package && \
+  echo 'apt-get -qy clean'      >> /usr/local/bin/vca-install-package
 
 # Create uninstall script
 RUN touch                                /usr/local/bin/vca-uninstall-package && \
   chmod +x                               /usr/local/bin/vca-uninstall-package && \
   echo '#! /bin/sh'                   >> /usr/local/bin/vca-uninstall-package && \
   echo 'set -e'                       >> /usr/local/bin/vca-uninstall-package && \
-  echo 'apt-get remove -y --purge $@' >> /usr/local/bin/vca-uninstall-package && \
-  echo 'apt-get -y autoremove'        >> /usr/local/bin/vca-uninstall-package && \
-  echo 'apt-get -y clean'             >> /usr/local/bin/vca-uninstall-package
+  echo 'apt-get -qy remove --purge $@' >> /usr/local/bin/vca-uninstall-package && \
+  echo 'apt-get -qy autoremove'        >> /usr/local/bin/vca-uninstall-package && \
+  echo 'apt-get -qy clean'             >> /usr/local/bin/vca-uninstall-package
