@@ -45,6 +45,11 @@ RUN vca-install-package apt-utils \
  && update-locale LANG=en_GB.UTF-8
 ENV LANG=en_GB.UTF-8
 
+# Set up the timezone
+RUN vca-install-package tzdata \
+ && echo "Europe/London" > /etc/timezone \
+ && dpkg-reconfigure tzdata
+
 # Update all packages
 RUN apt-get -q update \
  && apt-get -qy dist-upgrade \
