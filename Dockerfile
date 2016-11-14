@@ -17,17 +17,19 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.license=MIT \
       org.label-schema.schema-version="1.0"
 
+# Generate locales
+RUN apt-get -q update \
+ && apt-get -qy install apt-utils \
+ && apt-get -qy install locales language-pack-en \
+ && echo "LANG=en_GB.UTF-8" > /etc/default/locale \
+ && update-locale LANG=en_GB.UTF-8
+ENV LANG=en_GB.UTF-8
+
 # Update all packages
 RUN apt-get -q update \
  && apt-get -qy dist-upgrade \
  && apt-get -qy autoremove \
  && apt-get -q clean
-
-# Generate locales
-RUN cat /etc/locale.gen | expand | sed 's/^# .*$//g' | sed 's/^#$//g' | egrep -v '^$' | sed 's/^#//g' > /tmp/locale.gen \
-  && mv -f /tmp/locale.gen /etc/locale.gen \
-  && locale-gen
-ENV LANG=en_GB.utf8
 
 # Create install script
 RUN touch                         /usr/local/bin/vca-install-package && \
