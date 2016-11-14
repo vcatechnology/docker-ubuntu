@@ -17,6 +17,9 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.license=MIT \
       org.label-schema.schema-version="1.0"
 
+# Make sure APT operations are non-interactive
+ENV DEBIAN_FRONTEND noninteractive
+
 # Create install script
 RUN touch                                                                 /usr/local/bin/vca-install-package \
  && chmod +x                                                              /usr/local/bin/vca-install-package \
