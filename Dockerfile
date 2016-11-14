@@ -52,6 +52,6 @@ RUN vca-install-package tzdata \
 
 # Update all packages
 RUN apt-get -q update \
- && apt-get -qy dist-upgrade \
+ && apt-get -qy -o Dpkg::Options::="--force-confnew" dist-upgrade \
  && apt-get -qy autoremove \
  && apt-get -q clean
