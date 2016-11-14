@@ -17,6 +17,24 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.license=MIT \
       org.label-schema.schema-version="1.0"
 
+# Create install script
+RUN touch                                                                 /usr/local/bin/vca-install-package \
+ && chmod +x                                                              /usr/local/bin/vca-install-package \
+ && echo '#! /bin/sh'                                                  >> /usr/local/bin/vca-install-package \
+ && echo 'set -e'                                                      >> /usr/local/bin/vca-install-package \
+ && echo 'apt-get -q update'                                           >> /usr/local/bin/vca-install-package \
+ && echo 'apt-get -qy -o Dpkg::Options::="--force-confnew" install $@' >> /usr/local/bin/vca-install-package \
+ && echo 'apt-get -qy clean'                                           >> /usr/local/bin/vca-install-package
+
+# Create uninstall script
+RUN touch                                   /usr/local/bin/vca-uninstall-package \
+ && chmod +x                                /usr/local/bin/vca-uninstall-package \
+ && echo '#! /bin/sh'                    >> /usr/local/bin/vca-uninstall-package \
+ && echo 'set -e'                        >> /usr/local/bin/vca-uninstall-package \
+ && echo 'apt-get -qy remove --purge $@' >> /usr/local/bin/vca-uninstall-package \
+ && echo 'apt-get -qy autoremove'        >> /usr/local/bin/vca-uninstall-package \
+ && echo 'apt-get -qy clean'             >> /usr/local/bin/vca-uninstall-package
+
 # Generate locales
 RUN apt-get -q update \
  && apt-get -qy install apt-utils \
@@ -30,21 +48,3 @@ RUN apt-get -q update \
  && apt-get -qy dist-upgrade \
  && apt-get -qy autoremove \
  && apt-get -q clean
-
-# Create install script
-RUN touch                         /usr/local/bin/vca-install-package && \
-  chmod +x                        /usr/local/bin/vca-install-package && \
-  echo '#! /bin/sh'            >> /usr/local/bin/vca-install-package && \
-  echo 'set -e'                >> /usr/local/bin/vca-install-package && \
-  echo 'apt-get -q update'        >> /usr/local/bin/vca-install-package && \
-  echo 'apt-get -qy install $@' >> /usr/local/bin/vca-install-package && \
-  echo 'apt-get -qy clean'      >> /usr/local/bin/vca-install-package
-
-# Create uninstall script
-RUN touch                                /usr/local/bin/vca-uninstall-package && \
-  chmod +x                               /usr/local/bin/vca-uninstall-package && \
-  echo '#! /bin/sh'                   >> /usr/local/bin/vca-uninstall-package && \
-  echo 'set -e'                       >> /usr/local/bin/vca-uninstall-package && \
-  echo 'apt-get -qy remove --purge $@' >> /usr/local/bin/vca-uninstall-package && \
-  echo 'apt-get -qy autoremove'        >> /usr/local/bin/vca-uninstall-package && \
-  echo 'apt-get -qy clean'             >> /usr/local/bin/vca-uninstall-package
