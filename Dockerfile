@@ -39,9 +39,8 @@ RUN touch                                   /usr/local/bin/vca-uninstall-package
  && echo 'apt-get -qy clean'             >> /usr/local/bin/vca-uninstall-package
 
 # Generate locales
-RUN apt-get -q update \
- && apt-get -qy install apt-utils \
- && apt-get -qy install locales language-pack-en \
+RUN vca-install-package apt-utils \
+ && vca-install-package locales language-pack-en \
  && echo "LANG=en_GB.UTF-8" > /etc/default/locale \
  && update-locale LANG=en_GB.UTF-8
 ENV LANG=en_GB.UTF-8
